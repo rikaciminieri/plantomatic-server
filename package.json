@@ -1,6 +1,9 @@
 {
   "name": "plantomatic-server",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "description": "",
   "main": "app.js",
   "scripts": {
