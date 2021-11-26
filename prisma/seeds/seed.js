@@ -1,19 +1,23 @@
-import { PrismaClient} from require("@prisma/client")
-const prisma = new PrismaClient()
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-import { plants } from "./plants"
+const plants = require("./plants");
 
 async function main() {
-    await prisma.plant.createMany({
-        data: plants
-    })
+  for (let plant of plants) {
+    await prisma.plant.upsert({
+      where: { species: plant.species },
+      update: {},
+      create: plant
+    });
+  }
 }
 
 main()
   .catch((e) => {
-    console.error(e)
-    process.exit(1)
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });
