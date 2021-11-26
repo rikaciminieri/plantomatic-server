@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
+const {validatePlant} = require("../plants/plantMiddleware")
 
 router.get("/", async (req, res, next) => {
   try {
@@ -26,7 +27,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", validatePlant, async (req, res, next) => {
   try {
     const plant = await prisma.plant.create({
       data: req.body,
@@ -51,7 +52,7 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", validatePlant, async (req, res, next) => {
   try {
     const { id } = req.params;
     const plant = await prisma.plant.update({
