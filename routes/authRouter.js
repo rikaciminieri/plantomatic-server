@@ -1,7 +1,14 @@
-const router = require('express').Router();
+const prisma = require("../prismaClient");
 
-router.get('/', async (req, res, next) => {
-  res.send({ message: 'Ok api is working 🚀' });
+const router = require("express").Router();
+
+router.get("/", async (req, res, next) => {
+  try {
+    const users = await prisma.user.findMany({});
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

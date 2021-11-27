@@ -1,7 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
-
-const prisma = new PrismaClient();
-
 const validatePlant = async (req, res, next) => {
   try {
     const { species, h2oFrequency, details } = req.body;

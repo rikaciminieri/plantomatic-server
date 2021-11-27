@@ -1,5 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../../prismaClient");
+
+// const { PrismaClient } = require('@prisma/client')
+
+// const prisma = new PrismaClient()
 
 const plants = require("./plants");
 
@@ -8,7 +11,7 @@ async function main() {
     await prisma.plant.upsert({
       where: { species: plant.species },
       update: {},
-      create: plant
+      create: plant,
     });
   }
 }
