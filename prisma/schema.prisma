@@ -18,7 +18,8 @@ model Plant {
 
 model User {
   id          Int         @id @default(autoincrement())
-  name        String
+  firstName   String
+  lastName    String
   username    String      @unique
   email       String      @unique
   phoneNumber String
