@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const { prisma } = require("../prismaClient");
+const prisma = require("../prismaClient");
+const { restricted } = require("../auth/authMiddleware");
 
 const { validatePlant } = require("../plants/plantMiddleware");
 
-router.get("/", async (req, res, next) => {
+router.get("/", restricted, async (req, res, next) => {
   try {
     const plants = await prisma.plant.findMany({});
     res.json(plants);
@@ -12,7 +13,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", restricted, async (req, res, next) => {
   try {
     const { id } = req.params;
     const plant = await prisma.plant.findUnique({
@@ -28,6 +29,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", validatePlant, async (req, res, next) => {
   try {
+    // Need valid user id
     const plant = await prisma.plant.create({
       data: req.body,
     });
