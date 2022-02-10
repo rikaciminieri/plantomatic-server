@@ -27,11 +27,19 @@ router.get("/:id", restricted, async (req, res, next) => {
   }
 });
 
-router.post("/", validatePlant, async (req, res, next) => {
+router.post("/", restricted, validatePlant, async (req, res, next) => {
   try {
-    // Need valid user id
+    // This variable gives me access to user ID to connect to Userplants table
+    const userId = req.decodedJwt.subject;
     const plant = await prisma.plant.create({
-      data: req.body,
+      data: {
+        ...req.body,
+        users: {
+          create: {
+            userId
+          },
+        },
+      },
     });
     res.json(plant);
   } catch (error) {
